@@ -31,6 +31,25 @@ function createServer (config: MiddlewareConfig): Express {
 
   consola.success('Integrations loaded!');
 
+  app.get('/:integrationName/:functionName', async (req: Request, res: Response) => {
+    const { integrationName, functionName } = req.params as any as RequestParams;
+    const { apiClient, configuration, extensions, customQueries } = integrations[integrationName];
+    const middlewareContext: MiddlewareContext = { req, res, extensions, customQueries };
+    const createApiClient = apiClient.createApiClient.bind({ middleware: middlewareContext });
+    const apiClientInstance = createApiClient(configuration);
+    const apiFunction = apiClientInstance.api[functionName];
+    try {
+      const { a: args } = req.query;
+      const parsed = args ? JSON.parse(decodeURIComponent(args as string)) : [];
+      const platformResponse = await apiFunction(...parsed);
+
+      res.send(platformResponse);
+    } catch (error) {
+      res.status(getAgnosticStatusCode(error));
+      res.send(error);
+    }
+  });
+
   app.post('/:integrationName/:functionName', async (req: Request, res: Response) => {
     const { integrationName, functionName } = req.params as any as RequestParams;
     const { apiClient, configuration, extensions, customQueries } = integrations[integrationName];

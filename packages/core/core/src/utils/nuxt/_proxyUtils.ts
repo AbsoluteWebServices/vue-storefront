@@ -33,6 +33,20 @@ export const createProxiedApi = ({ givenApi, client, tag }: CreateProxiedApiPara
   }
 });
 
+export const createProxiedGetApi = ({ givenApi, client, tag }: CreateProxiedApiParams) => new Proxy(givenApi, {
+  get: (target, prop, receiver) => {
+
+    const functionName = String(prop);
+    if (Reflect.has(target, functionName)) {
+      return Reflect.get(target, prop, receiver);
+    }
+
+    return async (...args) => client
+      .get(`/${tag}/${functionName}`, { params: { a: encodeURIComponent(JSON.stringify(args)) } })
+      .then(r => r.data);
+  }
+});
+
 export const getCookies = (context: NuxtContext) => context?.req?.headers?.cookie ?? '';
 
 export const getIntegrationConfig = (context: NuxtContext, configuration: any) => {
