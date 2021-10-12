@@ -1,5 +1,5 @@
 import { createExtendIntegrationInCtx, createAddIntegrationToCtx } from './context';
-import { getIntegrationConfig, createProxiedApi } from './_proxyUtils';
+import { getIntegrationConfig, createProxiedApi, createProxiedGetApi } from './_proxyUtils';
 import { Context as NuxtContext, Plugin as NuxtPlugin } from '@nuxt/types';
 import axios from 'axios';
 
@@ -18,8 +18,9 @@ export const integrationPlugin = (pluginFn: NuxtPlugin) => (nuxtCtx: NuxtContext
 
     const client = axios.create(config.axios);
     const api = createProxiedApi({ givenApi: configuration.api || {}, client, tag });
+    const getApi = createProxiedGetApi({ givenApi: configuration.api || {}, client, tag });
 
-    injectInContext({ api, client, config });
+    injectInContext({ api, getApi, client, config });
   };
 
   const extend = (tag, integrationProperties) => {
