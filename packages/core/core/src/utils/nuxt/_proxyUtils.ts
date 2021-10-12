@@ -1,6 +1,6 @@
 import { IncomingMessage } from 'http';
 import { Context as NuxtContext } from '@nuxt/types';
-import merge from 'lodash-es/merge';
+import merge from 'lodash/merge';
 import { ApiClientMethod } from './../../types';
 
 interface CreateProxiedApiParams {
@@ -29,6 +29,20 @@ export const createProxiedApi = ({ givenApi, client, tag }: CreateProxiedApiPara
 
     return async (...args) => client
       .post(`/${tag}/${functionName}`, args)
+      .then(r => r.data);
+  }
+});
+
+export const createProxiedGetApi = ({ givenApi, client, tag }: CreateProxiedApiParams) => new Proxy(givenApi, {
+  get: (target, prop, receiver) => {
+
+    const functionName = String(prop);
+    if (Reflect.has(target, functionName)) {
+      return Reflect.get(target, prop, receiver);
+    }
+
+    return async (...args) => client
+      .get(`/${tag}/${functionName}`, { params: { a: encodeURIComponent(JSON.stringify(args)) } })
       .then(r => r.data);
   }
 });
