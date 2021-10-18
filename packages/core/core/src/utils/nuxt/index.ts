@@ -1,7 +1,29 @@
 import { createExtendIntegrationInCtx, createAddIntegrationToCtx } from './context';
 import { getIntegrationConfig, createProxiedApi, createProxiedGetApi } from './_proxyUtils';
 import { Context as NuxtContext, Plugin as NuxtPlugin } from '@nuxt/types';
-import axios from 'axios';
+import { $fetch } from 'ohmyfetch';
+
+const createClient = (config) => ({
+  async get(url, options) {
+    const data = await $fetch(url, {
+      ...config,
+      ...options
+    });
+    return { data };
+  },
+  async post(url, body, options) {
+    const data = await $fetch(url, {
+      method: 'POST',
+      ...config,
+      ...options,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    return { data };
+  }
+});
 
 type InjectFn = (key: string, value: any) => void;
 export type IntegrationPlugin = (pluginFn: NuxtPlugin) => NuxtPlugin
@@ -16,7 +38,7 @@ export const integrationPlugin = (pluginFn: NuxtPlugin) => (nuxtCtx: NuxtContext
       config.axios.baseURL = middlewareUrl;
     }
 
-    const client = axios.create(config.axios);
+    const client = createClient(config.axios);
     const api = createProxiedApi({ givenApi: configuration.api || {}, client, tag });
     const getApi = createProxiedGetApi({ givenApi: configuration.api || {}, client, tag });
 
