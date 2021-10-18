@@ -54,6 +54,7 @@ export const getIntegrationConfig = (context: NuxtContext, configuration: any) =
   const initialConfig = merge({
     axios: {
       baseURL: getBaseUrl(context?.req),
+      credentials: 'same-origin',
       headers: {
         ...(cookie ? { cookie } : {})
       }
