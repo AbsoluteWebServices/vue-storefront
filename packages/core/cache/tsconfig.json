@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
+    "rootDir": "./src",
     "outDir": "./lib",
+    "declarationDir": "./lib",
     "esModuleInterop": true,
     "target": "es5",
     "module": "ES2015",
@@ -16,6 +18,6 @@
     "strict": false,
     "allowJs": true
   },
-  "exclude": ["node_modules", "**/*.spec.ts"],
+  "exclude": ["node_modules", "lib", "**/*.spec.ts"],
   "include": ["src"],
 }

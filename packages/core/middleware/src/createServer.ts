@@ -2,7 +2,7 @@ import express, { Request, Response, Express } from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import consola from 'consola';
-import { MiddlewareConfig, ApiClientExtension, CustomQuery } from '@vue-storefront/core';
+import { MiddlewareConfig, ApiClientExtension, CustomQuery } from '@absolute-web/vsf-core';
 import { registerIntegrations } from './integrations';
 import getAgnosticStatusCode from './helpers/getAgnosticStatusCode';
 

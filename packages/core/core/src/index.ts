@@ -2,7 +2,7 @@
  * Core Vue Storefront 2 library.
  *
  * @remarks
- * The `@vue-storefront/core` library is a core of the whole Vue Storefront 2 application.
+ * The `@absolute-web/vsf-core` library is a core of the whole Vue Storefront 2 application.
  * It defines common interfaces for all eCommerce integrations, factories for creating
  * composables, logger, SSR helpers and more.
  *

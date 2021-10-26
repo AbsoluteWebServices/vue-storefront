@@ -6,7 +6,7 @@ import {
   ApiClientExtension,
   IntegrationsSection,
   CustomQuery
-} from '@vue-storefront/core';
+} from '@absolute-web/vsf-core';
 
 interface IntegrationLoaded {
   apiClient: ApiClientFactory;

@@ -1,9 +1,10 @@
 {
-  "name": "@vue-storefront/cache",
-  "version": "2.4.3",
+  "name": "@absolute-web/vsf-cache",
+  "version": "0.0.1",
   "license": "MIT",
   "main": "lib/index.cjs.js",
   "module": "lib/index.es.js",
+  "tsModule": "src/index.ts",
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "rimraf lib && rollup -c",
@@ -13,7 +14,7 @@
   },
   "dependencies": {
     "@nuxtjs/composition-api": "0.17.0",
-    "@vue-storefront/core": "~2.4.3"
+    "@absolute-web/vsf-core": "^0.0.1"
   },
   "publishConfig": {
     "access": "public"
@@ -28,10 +29,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vuestorefront/vue-storefront.git"
+    "url": "https://github.com/AbsoluteWebServices/vue-storefront.git"
   },
   "bugs": {
-    "url": "https://github.com/vuestorefront/vue-storefront/issues"
+    "url": "https://github.com/absolutewebservices/vue-storefront/issues"
   },
-  "homepage": "https://github.com/vuestorefront/vue-storefront#readme"
+  "homepage": "https://github.com/absolutewebservices/vue-storefront#readme"
 }
