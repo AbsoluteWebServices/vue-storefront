@@ -4359,6 +4359,43 @@
     graphql-tag "^2.10.1"
     isomorphic-fetch "^2.2.1"
 
+"@vue-storefront/core@^2.3.4", "@vue-storefront/core@~2.4.3":
+  version "2.4.5"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/core/-/core-2.4.5.tgz#1512d423ec6d2dd276698ed03a29303a8edd3ded"
+  integrity sha512-8bn7NkrXmgaG4cHMBMHryWIkp1ympkSwsDAg3r2/p5W7r+T7yeosKL1AbF35pvavFnNbEx4fYd1NPUibLOF4zA==
+  dependencies:
+    "@vue/composition-api" "1.0.0-beta.21"
+    axios "0.21.1"
+    express "^4.17.1"
+    is-https "^3.0.2"
+    lodash-es "^4.17.15"
+    vue "^2.6.11"
+
+"@vue-storefront/middleware@~2.4.3":
+  version "2.4.5"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/middleware/-/middleware-2.4.5.tgz#00a8a8dd6a6a5726f3491551cfdf4d6238578bb9"
+  integrity sha512-rsR1p3Y3F0L+li+A5ejwF4i1cGvi9STx3CpPfBFwNtrm0q+4pgLu8MyL9dUG5bgJTGicyf5ri89gyvJM8IxS3w==
+  dependencies:
+    consola "2.15.3"
+    cookie-parser "^1.4.5"
+    cors "^2.8.5"
+    express "^4.17.1"
+
+"@vue-storefront/nuxt@~2.4.3":
+  version "2.4.5"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/nuxt/-/nuxt-2.4.5.tgz#0efb4ce749251bc0109b960cc0024f49fe764161"
+  integrity sha512-Vekvt4RKLLAXNeajwLArZlml4XY3IQW0rvuHZiRrZ1235zVuZpwIkViduc0CUCjdySUCfDD10pG+fdU2Xz+3ug==
+  dependencies:
+    "@nuxt/typescript-build" "^2.0.0"
+    "@nuxtjs/composition-api" "0.17.0"
+    "@nuxtjs/style-resources" "^1.0.0"
+    "@vue/composition-api" "1.0.0-beta.21"
+    chalk "^2.4.2"
+    chokidar "^3.3.1"
+    consola "^2.10.1"
+    lodash "^4.17.15"
+    nuxt-purgecss "^1.0.0"
+
 "@vue-storefront/theme-utilities@^0.1.3":
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/@vue-storefront/theme-utilities/-/theme-utilities-0.1.5.tgz#0bab806b79694ec13714ce42f45fc771ea72480c"
@@ -14569,6 +14606,15 @@ octokit-pagination-methods@^1.1.0:
   resolved "https://registry.yarnpkg.com/octokit-pagination-methods/-/octokit-pagination-methods-1.1.0.tgz#cf472edc9d551055f9ef73f6e42b4dbb4c80bea4"
   integrity sha512-fZ4qZdQ2nxJvtcasX7Ghl+WlWS/d9IgnBIwFZXVNNZUmzpno91SX5bc5vuxiuKoCtK78XxGGNuSCrDC7xYB3OQ==
 
+ohmyfetch@^0.3.1:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/ohmyfetch/-/ohmyfetch-0.3.2.tgz#841293cb11256779a78fc9a91a7f3f4ae3671970"
+  integrity sha512-AG+brJ3aPsFGLZV8V4TDCqRQNjNPIHg3KJxem8tYp4w1+4PEvLpib5zNaRNGnB+8Dqc4ftPLCzQYEsz30haX2A==
+  dependencies:
+    destr "^1.1.0"
+    node-fetch "^2.6.1"
+    ufo "^0.7.9"
+
 on-finished@^2.3.0, on-finished@~2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/on-finished/-/on-finished-2.3.0.tgz#20f1336481b083cd75337992a16971aa2d906947"
@@ -18844,7 +18890,7 @@ uc.micro@^1.0.1, uc.micro@^1.0.5:
   resolved "https://registry.yarnpkg.com/uc.micro/-/uc.micro-1.0.6.tgz#9c411a802a409a91fc6cf74081baba34b24499ac"
   integrity sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA==
 
-ufo@^0.7.4, ufo@^0.7.7:
+ufo@^0.7.4, ufo@^0.7.7, ufo@^0.7.9:
   version "0.7.9"
   resolved "https://registry.yarnpkg.com/ufo/-/ufo-0.7.9.tgz#0268e3734b413c9ed6f3510201f42372821b875c"
   integrity sha512-6t9LrLk3FhqTS+GW3IqlITtfRB5JAVr5MMNjpBECfK827W+Vh5Ilw/LhTcHWrt6b3hkeBvcbjx4Ti7QVFzmcww==

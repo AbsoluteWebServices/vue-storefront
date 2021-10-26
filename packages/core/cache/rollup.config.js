@@ -1,4 +1,5 @@
 import pkg from './package.json';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
 
@@ -21,11 +22,10 @@ export function generateBaseConfig(pkg) {
       ...Object.keys(pkg.dependencies || {})
     ],
     plugins: [
-      typescript({
-        // eslint-disable-next-line global-require
-        typescript: require('typescript'),
-        objectHashIgnoreUnknownHack: true
+      nodeResolve({
+        extensions: ['.ts', '.js']
       }),
+      typescript(),
       terser()
     ]
   };

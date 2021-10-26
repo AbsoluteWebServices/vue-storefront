@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import { Logger } from '@vue-storefront/core';
+import { Logger } from '@absolute-web/vsf-core';
 import { requirePackage, requireDriver } from './helpers';
 
 /**

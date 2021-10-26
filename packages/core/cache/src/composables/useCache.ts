@@ -1,4 +1,4 @@
-import { CacheTag, UseCache, SetTagsFn } from '..';
+import { CacheTag, UseCache, SetTagsFn } from '../types';
 import { useContext } from '@nuxtjs/composition-api';
 
 export const useCache = (): UseCache => {

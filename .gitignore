@@ -7,9 +7,6 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-# NPM config
-.npmrc
-
 # Yarn Integrity file
 .yarn-integrity
 

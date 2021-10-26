@@ -1,4 +1,4 @@
-const { VSF_CURRENCY_COOKIE, VSF_COUNTRY_COOKIE } = require('@vue-storefront/core');
+const { VSF_CURRENCY_COOKIE, VSF_COUNTRY_COOKIE } = require('@absolute-web/vsf-core');
 
 const i18nCookiesPlugin = ({ $cookies }) => {
   const i18n = <%= serialize(options) %>;
