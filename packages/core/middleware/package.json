@@ -1,6 +1,6 @@
 {
-  "name": "@vue-storefront/middleware",
-  "version": "2.5.3",
+  "name": "@absolute-web/vsf-middleware",
+  "version": "0.0.1",
   "description": "",
   "main": "lib/index.cjs.js",
   "module": "lib/index.es.js",
@@ -22,7 +22,15 @@
     "@types/express": "^4.11.1",
     "@types/node": "^12.12.2"
   },
+  "files": [
+    "lib/**/*",
+    "nuxt/**/*"
+  ],
   "publishConfig": {
     "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AbsoluteWebServices/vue-storefront.git"
   }
 }

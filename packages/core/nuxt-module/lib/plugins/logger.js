@@ -1,4 +1,4 @@
-import { registerLogger } from '@vue-storefront/core'
+import { registerLogger } from '@absolute-web/vsf-core'
 
 const loggerPlugin = (ctx) => {
   const { verbosity, customLogger, ...args } = <%= serialize(options) %>;

@@ -1,4 +1,4 @@
-import { configureSSR } from '@vue-storefront/core';
+import { configureSSR } from '@absolute-web/vsf-core'
 import { ssrRef, getCurrentInstance, onServerPrefetch } from '@nuxtjs/composition-api';
 
 const hasRouteChanged = (ctx) => {

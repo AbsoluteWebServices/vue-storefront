@@ -1,4 +1,4 @@
-import { i18nRedirectsUtil, VSF_COUNTRY_COOKIE, VSF_CURRENCY_COOKIE, VSF_LOCALE_COOKIE } from '@vue-storefront/core';
+import { i18nRedirectsUtil, VSF_COUNTRY_COOKIE, VSF_CURRENCY_COOKIE, VSF_LOCALE_COOKIE } from '@absolute-web/vsf-core';
 
 const i18nCookiesPlugin = ({ $cookies, i18n, app, redirect }) => {
   const i18nOptions = <%= serialize(options) %>;
