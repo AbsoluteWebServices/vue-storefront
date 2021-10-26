@@ -8,8 +8,9 @@ export type AxiosError = {
 }
 
 export type ApolloError = {
-  networkError?: number
+  networkError?: any
   code: string | number
+  graphQLErrors?: any[]
 }
 
 type Status = typeof STATUS_FIELDS[number]
@@ -50,11 +51,15 @@ function getAxiosStatusCode(error: AxiosError) {
 
 function getApolloStatusCode(error: ApolloError) {
   if (error?.networkError) {
-    return 500;
+    return error.networkError.code || 500;
   }
 
   if (error?.code) {
     return typeof error.code === 'string' ? 400 : error.code;
+  }
+
+  if (error?.graphQLErrors?.length) {
+    return 500;
   }
 }
 
