@@ -50,9 +50,13 @@ export const createProxiedGetApi = ({ givenApi, client, tag }: CreateProxiedApiP
 export const getCookies = (context: NuxtContext) => context?.req?.headers?.cookie ?? '';
 
 export const getIntegrationConfig = (context: NuxtContext, configuration: any) => {
+  const cookie = getCookies(context);
   const initialConfig = merge({
     axios: {
       baseURL: getBaseUrl(context?.req),
+      headers: {
+        ...(cookie ? { cookie } : {})
+      },
       credentials: 'same-origin'
     }
   }, configuration);

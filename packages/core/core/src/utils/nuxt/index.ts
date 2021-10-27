@@ -17,6 +17,7 @@ const createClient = (config) => ({
       ...config,
       ...options,
       headers: {
+        ...(config && config.headers ? config.headers : {}),
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(body)
