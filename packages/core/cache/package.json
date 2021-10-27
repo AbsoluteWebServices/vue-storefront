@@ -1,6 +1,6 @@
 {
   "name": "@absolute-web/vsf-cache",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "main": "lib/index.cjs.js",
   "module": "lib/index.es.js",
@@ -14,7 +14,7 @@
   },
   "peerDependencies": {
     "@nuxtjs/composition-api": "^0.29.3",
-    "@absolute-web/vsf-core": "^0.0.1"
+    "@absolute-web/vsf-core": "~0.0.1"
   },
   "publishConfig": {
     "access": "public"
