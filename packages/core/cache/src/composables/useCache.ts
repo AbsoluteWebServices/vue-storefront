@@ -1,8 +1,8 @@
 import { CacheTag, UseCache, SetTagsFn } from '../types';
-import { useContext } from '@nuxtjs/composition-api';
+import { useNuxtApp } from '@absolute-web/vsf-core';
 
 export const useCache = (): UseCache => {
-  const { req }: any = useContext();
+  const { ssrContext: { req } }: any = useNuxtApp();
 
   if (!req) {
     return {

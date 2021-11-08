@@ -1,19 +1,24 @@
 {
   "name": "@absolute-web/vsf-cache",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
-  "main": "lib/index.cjs.js",
-  "module": "lib/index.es.js",
-  "tsModule": "src/index.ts",
+  "main": "lib/index.cjs",
+  "module": "lib/index.mjs",
   "types": "lib/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.cjs"
+    },
+    "./nuxt": "./nuxt/index.js",
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "build": "rimraf lib && rollup -c",
     "dev": "rollup -c -w",
     "test": "jest",
     "prepublish": "yarn build"
-  },
-  "dependencies": {
-    "@nuxtjs/composition-api": "0.17.0"
   },
   "peerDependencies": {
     "@absolute-web/vsf-core": "~0.0.1"

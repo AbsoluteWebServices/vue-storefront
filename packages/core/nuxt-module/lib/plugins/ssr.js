@@ -1,5 +1,7 @@
 import { configureSSR } from '@absolute-web/vsf-core'
-import { ssrRef, getCurrentInstance, onServerPrefetch } from '@nuxtjs/composition-api';
+import { onServerPrefetch, getCurrentInstance } from '@vue/composition-api';
+import { useState } from '#app';
+
 
 const hasRouteChanged = (ctx) => {
   const { from } = ctx.$router.app.context;
@@ -14,7 +16,7 @@ const hasRouteChanged = (ctx) => {
 
 const ssrPlugin = () => {
   configureSSR({
-    vsfRef: ssrRef,
+    vsfRef: (value, key) => useState(key, value instanceof Function ? value : () => value),
     onSSR: (fn) => {
       onServerPrefetch(fn);
       if (typeof window !== 'undefined') {

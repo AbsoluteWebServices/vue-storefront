@@ -1,17 +1,17 @@
 
 import { configureContext } from '@absolute-web/vsf-core'
-import { useContext as useBaseContext } from '@nuxtjs/composition-api';
+import { useNuxtApp } from '#app';
 
 const contextPlugin = (ctx, inject) => {
   const sharedMap = new Map();
 
   const useVSFContext = () => {
-    const { $vsf, ...context } = useBaseContext();
+    const { nuxt2Context: { $vsf, ...context } } = useNuxtApp();
 
     return { $vsf, ...context, ...$vsf }
   }
 
-  configureContext({ useVSFContext });
+  configureContext({ useVSFContext, useNuxtApp });
   inject('sharedRefsMap', sharedMap)
 };
 

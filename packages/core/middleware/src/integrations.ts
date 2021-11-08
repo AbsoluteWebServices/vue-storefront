@@ -7,6 +7,9 @@ import {
   IntegrationsSection,
   CustomQuery
 } from '@absolute-web/vsf-core';
+import { createCommonJS } from 'mlly';
+
+const { require } = createCommonJS(import.meta.url);
 
 interface IntegrationLoaded {
   apiClient: ApiClientFactory;
