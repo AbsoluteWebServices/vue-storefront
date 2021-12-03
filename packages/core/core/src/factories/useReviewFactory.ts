@@ -16,7 +16,7 @@ export function useReviewFactory<REVIEW, REVIEWS_SEARCH_PARAMS, REVIEW_ADD_PARAM
   factoryParams: UseReviewFactoryParams<REVIEW, REVIEWS_SEARCH_PARAMS, REVIEW_ADD_PARAMS, API>
 ) {
   return function useReview(id: string): UseReview<REVIEW, REVIEWS_SEARCH_PARAMS, REVIEW_ADD_PARAMS> {
-    const reviews: Ref<REVIEW> = sharedRef([], `useReviews-reviews-${id}`);
+    const reviews: Ref<REVIEW> = sharedRef(null, `useReviews-reviews-${id}`);
     const loading: Ref<boolean> = sharedRef(false, `useReviews-loading-${id}`);
     const error: Ref<UseReviewErrors> = sharedRef({
       search: null,

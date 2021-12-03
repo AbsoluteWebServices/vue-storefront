@@ -15,7 +15,7 @@ export function useContentFactory<CONTENT, CONTENT_SEARCH_PARAMS, API extends Pl
   factoryParams: UseContentFactoryParams<CONTENT, CONTENT_SEARCH_PARAMS, API>
 ) {
   return function useContent(id: string): UseContent<CONTENT, CONTENT_SEARCH_PARAMS, API> {
-    const content: Ref<CONTENT> = sharedRef([], `useContent-content-${id}`);
+    const content: Ref<CONTENT> = sharedRef(null, `useContent-content-${id}`);
     const loading: Ref<boolean> = sharedRef(false, `useContent-loading-${id}`);
     const error: Ref<UseContentErrors> = sharedRef({
       search: null

@@ -55,7 +55,7 @@ export const useUserShippingFactory = <USER_SHIPPING, USER_SHIPPING_ITEM, API ex
 
   const useUserShipping = (): UseUserShipping<USER_SHIPPING, USER_SHIPPING_ITEM, API> => {
     const loading: Ref<boolean> = sharedRef(false, 'useUserShipping-loading');
-    const shipping: Ref<USER_SHIPPING> = sharedRef({}, 'useUserShipping-shipping');
+    const shipping: Ref<USER_SHIPPING> = sharedRef(null, 'useUserShipping-shipping');
     const readonlyShipping: Readonly<USER_SHIPPING> = unref(shipping);
     const error: Ref<UseUserShippingErrors> = sharedRef({
       addAddress: null,

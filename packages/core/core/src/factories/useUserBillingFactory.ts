@@ -55,7 +55,7 @@ export const useUserBillingFactory = <USER_BILLING, USER_BILLING_ITEM, API exten
 
   const useUserBilling = (): UseUserBilling<USER_BILLING, USER_BILLING_ITEM, API> => {
     const loading: Ref<boolean> = sharedRef(false, 'useUserBilling-loading');
-    const billing: Ref<USER_BILLING> = sharedRef({}, 'useUserBilling-billing');
+    const billing: Ref<USER_BILLING> = sharedRef(null, 'useUserBilling-billing');
     const error: Ref<UseUserBillingErrors> = sharedRef({
       addAddress: null,
       deleteAddress: null,

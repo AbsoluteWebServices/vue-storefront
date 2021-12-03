@@ -83,13 +83,18 @@ export interface UseProduct<
   [x: string]: any;
 }
 
+export interface ForgotPasswordResult<RESULT> {
+  resetPasswordResult: RESULT;
+  setNewPasswordResult: RESULT;
+}
+
 export interface UseForgotPasswordErrors {
   request: Error;
   setNew: Error;
 }
 
 export interface UseForgotPassword<RESULT> {
-  result: ComputedProperty<RESULT>;
+  result: ComputedProperty<ForgotPasswordResult<RESULT>>;
   loading: ComputedProperty<boolean>;
   error: ComputedProperty<UseForgotPasswordErrors>;
   setNew(params: ComposableFunctionArgs<{ tokenValue: string, newPassword: string }>): Promise<void>;

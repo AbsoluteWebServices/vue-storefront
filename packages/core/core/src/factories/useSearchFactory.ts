@@ -10,7 +10,7 @@ export function useSearchFactory<RESULT, SEARCH_PARAMS>(
   factoryParams: UseSearchFactoryParams<RESULT, SEARCH_PARAMS>
 ) {
   return function useSearch(id: string): UseSearch<RESULT, SEARCH_PARAMS> {
-    const result: Ref<RESULT> = sharedRef([], `useSearch-products-${id}`);
+    const result: Ref<RESULT> = sharedRef(null, `useSearch-products-${id}`);
     const loading = sharedRef(false, `useSearch-loading-${id}`);
     const _factoryParams = configureFactoryParams(factoryParams);
     const error: Ref<UseSearchErrors> = sharedRef({
