@@ -1,6 +1,6 @@
 {
   "name": "@absolute-web/vsf-nuxt",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "",
   "main": "lib/module.js",
   "scripts": {
