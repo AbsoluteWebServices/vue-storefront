@@ -9,7 +9,8 @@ export const useCache = (): UseCache => {
       addTags: () => {},
       clearTags: () => {},
       getTags: () => [],
-      setTags: () => {}
+      setTags: () => {},
+      addTagsFromString: () => {}
     };
   }
 
@@ -23,11 +24,29 @@ export const useCache = (): UseCache => {
     tagsSet.clear();
     newTags.forEach(tag => tagsSet.add(tag));
   };
+  const addTagsFromString = (tags: string) => {
+    if (tags) {
+      const parsedTags = tags.split(',').map((tag) => {
+        const parts = tag.split('_');
+
+        if (parts.length === 2) {
+          return { prefix: `${parts[0]}_`, value: parts[1] };
+        }
+        if (parts.length === 3) {
+          return { prefix: `${parts[0]}_${parts[1]}_`, value: parts[2] };
+        }
+        return { prefix: '', value: parts[0] };
+      });
+
+      addTags(parsedTags);
+    }
+  };
 
   return {
     addTags,
     clearTags,
     getTags,
-    setTags
+    setTags,
+    addTagsFromString
   };
 };

@@ -38,4 +38,5 @@ export interface UseCache {
   clearTags(): void;
   getTags(): CacheTag[];
   setTags(callback: SetTagsFn): void;
+  addTagsFromString(tags: string): void;
 }
