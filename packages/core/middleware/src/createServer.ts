@@ -40,7 +40,7 @@ function createServer (config: MiddlewareConfig): Express {
     const apiFunction = apiClientInstance.api[functionName];
     try {
       const { a: args } = req.query;
-      const parsed = args ? JSON.parse(decodeURIComponent(args as string)) : [];
+      const parsed = args ? JSON.parse(args as string) : [];
       const platformResponse = await apiFunction(...parsed);
 
       res.send(platformResponse);

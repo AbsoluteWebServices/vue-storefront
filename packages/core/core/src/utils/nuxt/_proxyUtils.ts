@@ -42,7 +42,7 @@ export const createProxiedGetApi = ({ givenApi, client, tag }: CreateProxiedApiP
     }
 
     return async (...args) => client
-      .get(`/${tag}/${functionName}`, { params: { a: encodeURIComponent(JSON.stringify(args)) } })
+      .get(`/${tag}/${functionName}`, { params: { a: JSON.stringify(args) } })
       .then(r => r.data);
   }
 });

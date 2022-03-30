@@ -6,6 +6,7 @@ import { $fetch } from 'ohmyfetch';
 const createClient = (config) => ({
   async get(url, options) {
     const data = await $fetch(url, {
+      method: 'GET',
       ...config,
       ...options
     });
@@ -16,11 +17,7 @@ const createClient = (config) => ({
       method: 'POST',
       ...config,
       ...options,
-      headers: {
-        ...(config && config.headers ? config.headers : {}),
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
+      body
     });
     return { data };
   }
