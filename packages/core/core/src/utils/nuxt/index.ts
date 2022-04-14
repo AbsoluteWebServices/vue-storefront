@@ -5,21 +5,29 @@ import { $fetch } from 'ohmyfetch';
 
 const createClient = (config) => ({
   async get(url, options) {
-    const data = await $fetch(url, {
-      method: 'GET',
-      ...config,
-      ...options
-    });
-    return { data };
+    try {
+      const data = await $fetch(url, {
+        method: 'GET',
+        ...config,
+        ...options
+      });
+      return { data };
+    } catch (err) {
+      throw err.data;
+    }
   },
   async post(url, body, options) {
-    const data = await $fetch(url, {
-      method: 'POST',
-      ...config,
-      ...options,
-      body
-    });
-    return { data };
+    try {
+      const data = await $fetch(url, {
+        method: 'POST',
+        ...config,
+        ...options,
+        body
+      });
+      return { data };
+    } catch (err) {
+      throw err.data;
+    }
   }
 });
 
