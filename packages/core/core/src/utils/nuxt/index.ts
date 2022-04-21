@@ -3,13 +3,22 @@ import { getIntegrationConfig, createProxiedApi, createProxiedGetApi } from './_
 import { Context as NuxtContext, Plugin as NuxtPlugin } from '@nuxt/types';
 import { $fetch } from 'ohmyfetch';
 
-const createClient = (config) => ({
+const createClient = (nuxtCtx: NuxtContext, config) => ({
   async get(url, options) {
     try {
       const data = await $fetch(url, {
         method: 'GET',
         ...config,
-        ...options
+        ...options,
+        async onResponse({ response }) {
+          if (process.server &&
+            !nuxtCtx.res.headersSent &&
+            process.env.HTTP_PROPAGATE_STALE_HEADER_STATUS_CODE &&
+            process.env.HTTP_STALE_HEADER_NAME &&
+            response.status === parseInt(process.env.HTTP_PROPAGATE_STALE_HEADER_STATUS_CODE)) {
+            nuxtCtx.res.setHeader(process.env.HTTP_STALE_HEADER_NAME, 1);
+          }
+        }
       });
       return { data };
     } catch (err) {
@@ -22,7 +31,16 @@ const createClient = (config) => ({
         method: 'POST',
         ...config,
         ...options,
-        body
+        body,
+        async onResponse({ response }) {
+          if (process.server &&
+            !nuxtCtx.res.headersSent &&
+            process.env.HTTP_PROPAGATE_STALE_HEADER_STATUS_CODE &&
+            process.env.HTTP_STALE_HEADER_NAME &&
+            response.status === parseInt(process.env.HTTP_PROPAGATE_STALE_HEADER_STATUS_CODE)) {
+            nuxtCtx.res.setHeader(process.env.HTTP_STALE_HEADER_NAME, 1);
+          }
+        }
       });
       return { data };
     } catch (err) {
@@ -63,7 +81,7 @@ export const integrationPlugin = (pluginFn: NuxtPlugin) => (nuxtCtx: NuxtContext
       config.axios.headers.cookie = setCookieValues(nuxtCtx.app.i18n.cookieValues, config.axios.headers.cookie);
     }
 
-    const client = createClient(config.axios);
+    const client = createClient(nuxtCtx, config.axios);
     const api = createProxiedApi({ givenApi: configuration.api || {}, client, tag });
     const getApi = createProxiedGetApi({ givenApi: configuration.api || {}, client, tag });
 
