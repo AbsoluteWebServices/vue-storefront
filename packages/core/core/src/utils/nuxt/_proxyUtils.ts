@@ -58,6 +58,23 @@ export const getRequestUrl = (req: IncomingMessage) => {
   return `${scheme}://${host}${req.originalUrl}`;
 };
 
+const getRequestHeadersToForward = (req: IncomingMessage) => {
+  let headers = {};
+
+  if (process.env.SSR_API_FORWARD_HEADERS && req.headers) {
+    const headersWhitelist = process.env.SSR_API_FORWARD_HEADERS.split(',').map(value => value?.toLowerCase().trim());
+
+    if (headersWhitelist.length) {
+      headers = Object.keys(req.headers).reduce((acc, key) => ({
+        ...acc,
+        ...(headersWhitelist.includes(key) ? { [key]: req.headers[key] } : {})
+      }), headers);
+    }
+  }
+
+  return headers;
+};
+
 export const getIntegrationConfig = (context: NuxtContext, configuration: any) => {
   const req = context?.req;
   const cookie = getCookies(context);
@@ -67,7 +84,10 @@ export const getIntegrationConfig = (context: NuxtContext, configuration: any) =
       credentials: 'same-origin',
       headers: {
         ...(cookie ? { cookie } : {}),
-        ...(req ? { 'X-Referrer': getRequestUrl(req) } : {})
+        ...(req ? {
+          'X-Referrer': getRequestUrl(req),
+          ...getRequestHeadersToForward(req)
+        } : {})
       }
     }
   }, configuration);
