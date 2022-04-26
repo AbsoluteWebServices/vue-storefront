@@ -1,4 +1,4 @@
-import { IncomingMessage } from 'http';
+import { IncomingMessage } from 'connect';
 import { Context as NuxtContext } from '@nuxt/types';
 import merge from 'lodash/merge';
 import { ApiClientMethod } from './../../types';
@@ -49,14 +49,25 @@ export const createProxiedGetApi = ({ givenApi, client, tag }: CreateProxiedApiP
 
 export const getCookies = (context: NuxtContext) => context?.req?.headers?.cookie ?? '';
 
+export const getRequestUrl = (req: IncomingMessage) => {
+  if (!req) return null;
+  const { headers } = req;
+  const isHttps = require('is-https')(req);
+  const scheme = isHttps ? 'https' : 'http';
+  const host = headers['x-forwarded-host'] || headers.host;
+  return `${scheme}://${host}${req.originalUrl}`;
+};
+
 export const getIntegrationConfig = (context: NuxtContext, configuration: any) => {
+  const req = context?.req;
   const cookie = getCookies(context);
   const initialConfig = merge({
     axios: {
-      baseURL: getBaseUrl(context?.req),
+      baseURL: getBaseUrl(req),
       credentials: 'same-origin',
       headers: {
-        ...(cookie ? { cookie } : {})
+        ...(cookie ? { cookie } : {}),
+        ...(req ? { 'X-Referrer': getRequestUrl(req) } : {})
       }
     }
   }, configuration);
