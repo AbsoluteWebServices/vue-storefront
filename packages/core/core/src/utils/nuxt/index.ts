@@ -22,7 +22,10 @@ const createClient = (nuxtCtx: NuxtContext, config) => ({
       });
       return { data };
     } catch (err) {
-      throw err.data;
+      if (err.data) {
+        throw err.data;
+      }
+      throw err;
     }
   },
   async post(url, body, options) {
@@ -44,7 +47,10 @@ const createClient = (nuxtCtx: NuxtContext, config) => ({
       });
       return { data };
     } catch (err) {
-      throw err.data;
+      if (err.data) {
+        throw err.data;
+      }
+      throw err;
     }
   }
 });

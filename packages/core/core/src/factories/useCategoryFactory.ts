@@ -1,4 +1,4 @@
-import { CustomQuery, UseCategory, Context, FactoryParams, UseCategoryErrors, PlatformApi } from '../types';
+import { UseCategory, Context, FactoryParams, UseCategoryErrors, PlatformApi, ComposableFunctionArgs } from '../types';
 import { Ref, computed } from '@nuxtjs/composition-api';
 import { sharedRef, Logger, configureFactoryParams } from '../utils';
 
@@ -7,7 +7,7 @@ export interface UseCategoryFactoryParams<
   CATEGORY_SEARCH_PARAMS,
   API extends PlatformApi = any
 > extends FactoryParams<API> {
-  categorySearch: (context: Context, params: CATEGORY_SEARCH_PARAMS & { customQuery?: CustomQuery }) => Promise<CATEGORY[]>;
+  categorySearch: (context: Context, params: ComposableFunctionArgs<CATEGORY_SEARCH_PARAMS>) => Promise<CATEGORY[]>;
 }
 
 export function useCategoryFactory<CATEGORY, CATEGORY_SEARCH_PARAMS, API extends PlatformApi = any>(

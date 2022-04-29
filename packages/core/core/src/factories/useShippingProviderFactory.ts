@@ -3,15 +3,15 @@ import {
   Context,
   FactoryParams,
   UseShippingProviderErrors,
-  CustomQuery,
-  PlatformApi
+  PlatformApi,
+  ComposableFunctionArgs
 } from '../types';
 import { Ref, computed } from '@nuxtjs/composition-api';
 import { sharedRef, Logger, configureFactoryParams } from '../utils';
 
 export interface UseShippingProviderParams<STATE, SHIPPING_METHOD, API extends PlatformApi = any> extends FactoryParams<API> {
-  load: (context: Context, params: { state: Ref<STATE>, customQuery?: CustomQuery }) => Promise<STATE>;
-  save: (context: Context, params: { state: Ref<STATE>, shippingMethod: SHIPPING_METHOD, customQuery?: CustomQuery }) => Promise<STATE>;
+  load: (context: Context, params: ComposableFunctionArgs<{ state: Ref<STATE> }>) => Promise<STATE>;
+  save: (context: Context, params: ComposableFunctionArgs<{ state: Ref<STATE>, shippingMethod: SHIPPING_METHOD }>) => Promise<STATE>;
 }
 
 export const useShippingProviderFactory = <STATE, SHIPPING_METHOD, API extends PlatformApi = any>(
@@ -35,12 +35,12 @@ export const useShippingProviderFactory = <STATE, SHIPPING_METHOD, API extends P
       Logger.debug('useShippingProvider.setState', newState);
     };
 
-    const save = async ({ shippingMethod, customQuery = null }) => {
+    const save = async (params = {}) => {
       Logger.debug('useShippingProvider.save');
 
       try {
         loading.value = true;
-        state.value = await _factoryParams.save({ shippingMethod, customQuery, state });
+        state.value = await _factoryParams.save({ state, ...params });
         error.value.save = null;
       } catch (err) {
         error.value.save = err;
@@ -50,12 +50,12 @@ export const useShippingProviderFactory = <STATE, SHIPPING_METHOD, API extends P
       }
     };
 
-    const load = async ({ customQuery = null } = {}) => {
+    const load = async (params = {}) => {
       Logger.debug('useShippingProvider.load');
 
       try {
         loading.value = true;
-        state.value = await _factoryParams.load({ customQuery, state });
+        state.value = await _factoryParams.load({ state, ...params });
         error.value.load = null;
       } catch (err) {
         error.value.load = err;

@@ -27,7 +27,7 @@ export type ComputedProperty<T> = Readonly<Ref<Readonly<T>>>;
 
 export type CustomQuery = Record<string, string>
 
-export type ComposableFunctionArgs <T> = T & { customQuery?: CustomQuery }
+export type ComposableFunctionArgs <T> = T & { customQuery?: CustomQuery, signal?: AbortSignal };
 
 export interface ProductsSearchParams {
   perPage?: number;
@@ -138,12 +138,12 @@ export interface UseUser
 > extends Composable<API> {
   user: ComputedProperty<USER>;
   setUser: (user: USER) => void;
-  updateUser: (params: { user: UPDATE_USER_PARAMS; customQuery?: CustomQuery }) => Promise<void>;
-  register: (params: { user: UseUserRegisterParams; customQuery?: CustomQuery }) => Promise<void>;
-  login: (params: { user: UseUserLoginParams; customQuery?: CustomQuery }) => Promise<void>;
-  logout: (params?: {customQuery: CustomQuery}) => Promise<void>;
-  changePassword: (params: { current: string; new: string, customQuery?: CustomQuery }) => Promise<void>;
-  load: (params?: {customQuery: CustomQuery}) => Promise<void>;
+  updateUser: (params: ComposableFunctionArgs<{ user: UPDATE_USER_PARAMS }>) => Promise<void>;
+  register: (params: ComposableFunctionArgs<{ user: UseUserRegisterParams }>) => Promise<void>;
+  login: (params: ComposableFunctionArgs<{ user: UseUserLoginParams }>) => Promise<void>;
+  logout: (params?: ComposableFunctionArgs<unknown>) => Promise<void>;
+  changePassword: (params: ComposableFunctionArgs<{ current: string; new: string }>) => Promise<void>;
+  load: (params?: ComposableFunctionArgs<unknown>) => Promise<void>;
   isAuthenticated: Ref<boolean>;
   loading: ComputedProperty<boolean>;
   error: ComputedProperty<UseUserErrors>;
@@ -191,11 +191,11 @@ USER_SHIPPING_ITEM,
 API extends PlatformApi = any
 > extends Composable<API> {
   shipping: ComputedProperty<USER_SHIPPING>;
-  addAddress: (params: { address: USER_SHIPPING_ITEM, customQuery?: CustomQuery }) => Promise<void>;
-  deleteAddress: (params: { address: USER_SHIPPING_ITEM, customQuery?: CustomQuery }) => Promise<void>;
-  updateAddress: (params: { address: USER_SHIPPING_ITEM, customQuery?: CustomQuery}) => Promise<void>;
-  load: () => Promise<void>;
-  setDefaultAddress: (params: { address: USER_SHIPPING_ITEM, customQuery?: CustomQuery }) => Promise<void>;
+  addAddress: (params: ComposableFunctionArgs<{ address: USER_SHIPPING_ITEM }>) => Promise<void>;
+  deleteAddress: (params: ComposableFunctionArgs<{ address: USER_SHIPPING_ITEM }>) => Promise<void>;
+  updateAddress: (params: ComposableFunctionArgs<{ address: USER_SHIPPING_ITEM }>) => Promise<void>;
+  load: (params: ComposableFunctionArgs<unknown>) => Promise<void>;
+  setDefaultAddress: (params: ComposableFunctionArgs<{ address: USER_SHIPPING_ITEM }>) => Promise<void>;
   loading: ComputedProperty<boolean>;
   error: ComputedProperty<UseUserShippingErrors>;
 }
@@ -234,11 +234,11 @@ export interface UseUserBilling<
   API extends PlatformApi = any
 > extends Composable<API> {
   billing: ComputedProperty<USER_BILLING>;
-  addAddress: (params: { address: USER_BILLING_ITEM, customQuery?: CustomQuery }) => Promise<void>;
-  deleteAddress: (params: { address: USER_BILLING_ITEM, customQuery?: CustomQuery }) => Promise<void>;
-  updateAddress: (params: { address: USER_BILLING_ITEM, customQuery?: CustomQuery }) => Promise<void>;
-  load: () => Promise<void>;
-  setDefaultAddress: (params: { address: USER_BILLING_ITEM, customQuery?: CustomQuery }) => Promise<void>;
+  addAddress: (params: ComposableFunctionArgs<{ address: USER_BILLING_ITEM }>) => Promise<void>;
+  deleteAddress: (params: ComposableFunctionArgs<{ address: USER_BILLING_ITEM }>) => Promise<void>;
+  updateAddress: (params: ComposableFunctionArgs<{ address: USER_BILLING_ITEM }>) => Promise<void>;
+  load: (params?: ComposableFunctionArgs<unknown>) => Promise<void>;
+  setDefaultAddress: (params: ComposableFunctionArgs<{ address: USER_BILLING_ITEM }>) => Promise<void>;
   loading: ComputedProperty<boolean>;
   error: ComputedProperty<UseUserBillingErrors>;
 }
@@ -404,9 +404,8 @@ API extends PlatformApi = any
   error: ComputedProperty<UseShippingErrors>;
   loading: ComputedProperty<boolean>;
   shipping: ComputedProperty<SHIPPING>;
-  load(): Promise<void>;
-  load(params: { customQuery?: CustomQuery }): Promise<void>;
-  save: (params: { params: SHIPPING_PARAMS; shippingDetails: SHIPPING; customQuery?: CustomQuery }) => Promise<void>;
+  load(params?: ComposableFunctionArgs<unknown>): Promise<void>;
+  save: (params: ComposableFunctionArgs<{ params: SHIPPING_PARAMS; shippingDetails: SHIPPING }>) => Promise<void>;
 }
 export interface UseShippingProviderErrors {
   load: Error;
@@ -421,9 +420,8 @@ API extends PlatformApi = any
   loading: ComputedProperty<boolean>;
   state: ComputedProperty<STATE>;
   setState(state: STATE): void;
-  load(): Promise<void>;
-  load(params: { customQuery?: CustomQuery }): Promise<void>;
-  save(params: { shippingMethod: SHIPPING_METHOD, customQuery?: CustomQuery }): Promise<void>;
+  load(params?: ComposableFunctionArgs<unknown>): Promise<void>;
+  save(params: ComposableFunctionArgs<{ shippingMethod: SHIPPING_METHOD }>): Promise<void>;
 }
 
 export interface UseBillingErrors {
@@ -439,9 +437,8 @@ export interface UseBilling<
   error: ComputedProperty<UseBillingErrors>;
   loading: ComputedProperty<boolean>;
   billing: ComputedProperty<BILLING>;
-  load(): Promise<void>;
-  load(params: { customQuery?: CustomQuery }): Promise<void>;
-  save: (params: { params: BILLING_PARAMS; billingDetails: BILLING; customQuery?: CustomQuery }) => Promise<void>;
+  load(params?: ComposableFunctionArgs<unknown>): Promise<void>;
+  save: (params: ComposableFunctionArgs<{ params: BILLING_PARAMS; billingDetails: BILLING }>) => Promise<void>;
 }
 export interface UseFacetErrors {
   search: Error;
@@ -466,7 +463,7 @@ export interface FacetSearchResult<S> {
 export interface UseFacet<SEARCH_DATA> {
   result: ComputedProperty<FacetSearchResult<SEARCH_DATA>>;
   loading: ComputedProperty<boolean>;
-  search: (params?: AgnosticFacetSearchParams) => Promise<void>;
+  search: (params?: ComposableFunctionArgs<AgnosticFacetSearchParams>) => Promise<void>;
   error: ComputedProperty<UseFacetErrors>;
 }
 export interface UseContentErrors {
@@ -877,7 +874,7 @@ export interface ApiClientConfig {
 export type ApiClientMethods<T> = {
   [K in keyof T]:
     T[K] extends (...args: any) => any ?
-    (...args: [...Parameters<T[K]>, CustomQuery?]) => ReturnType<T[K]> :
+    (...args: [...Parameters<T[K]>, CustomQuery?, AbortSignal?]) => ReturnType<T[K]> :
     T[K]
 }
 

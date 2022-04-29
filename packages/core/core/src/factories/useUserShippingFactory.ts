@@ -1,10 +1,10 @@
 import { Ref, unref, computed } from '@nuxtjs/composition-api';
 import {
+  ComposableFunctionArgs,
   UseUserShipping,
   Context,
   FactoryParams,
   UseUserShippingErrors,
-  CustomQuery,
   PlatformApi
 } from '../types';
 import { sharedRef, Logger, mask, configureFactoryParams } from '../utils';
@@ -16,37 +16,33 @@ export interface UseUserShippingFactoryParams<
 > extends FactoryParams<API> {
   addAddress: (
     context: Context,
-    params: {
+    params: ComposableFunctionArgs<{
       address: Readonly<USER_SHIPPING_ITEM>;
       shipping: Readonly<USER_SHIPPING>;
-      customQuery?: CustomQuery;
-    }) => Promise<USER_SHIPPING>;
+    }>) => Promise<USER_SHIPPING>;
   deleteAddress: (
     context: Context,
-    params: {
+    params: ComposableFunctionArgs<{
       address: Readonly<USER_SHIPPING_ITEM>;
       shipping: Readonly<USER_SHIPPING>;
-      customQuery?: CustomQuery;
-    }) => Promise<USER_SHIPPING>;
+    }>) => Promise<USER_SHIPPING>;
   updateAddress: (
     context: Context,
-    params: {
+    params: ComposableFunctionArgs<{
       address: Readonly<USER_SHIPPING_ITEM>;
       shipping: Readonly<USER_SHIPPING>;
-      customQuery?: CustomQuery;
-    }) => Promise<USER_SHIPPING>;
+    }>) => Promise<USER_SHIPPING>;
   load: (
     context: Context,
-    params: {
+    params: ComposableFunctionArgs<{
       shipping: Readonly<USER_SHIPPING>;
-    }) => Promise<USER_SHIPPING>;
+    }>) => Promise<USER_SHIPPING>;
   setDefaultAddress: (
     context: Context,
-    params: {
+    params: ComposableFunctionArgs<{
       address: Readonly<USER_SHIPPING_ITEM>;
       shipping: Readonly<USER_SHIPPING>;
-      customQuery?: CustomQuery;
-    }) => Promise<USER_SHIPPING>;
+    }>) => Promise<USER_SHIPPING>;
 }
 
 export const useUserShippingFactory = <USER_SHIPPING, USER_SHIPPING_ITEM, API extends PlatformApi = any>(
@@ -70,15 +66,14 @@ export const useUserShippingFactory = <USER_SHIPPING, USER_SHIPPING_ITEM, API ex
       { mainRef: shipping, alias: 'currentShipping', loading, error }
     );
 
-    const addAddress = async ({ address, customQuery }) => {
-      Logger.debug('useUserShipping.addAddress', mask(address));
+    const addAddress = async (params = {}) => {
+      Logger.debug('useUserShipping.addAddress', mask(params));
 
       try {
         loading.value = true;
         shipping.value = await _factoryParams.addAddress({
-          address,
           shipping: readonlyShipping,
-          customQuery
+          ...params
         });
         error.value.addAddress = null;
       } catch (err) {
@@ -89,15 +84,14 @@ export const useUserShippingFactory = <USER_SHIPPING, USER_SHIPPING_ITEM, API ex
       }
     };
 
-    const deleteAddress = async ({ address, customQuery }) => {
-      Logger.debug('useUserShipping.deleteAddress', address);
+    const deleteAddress = async (params = {}) => {
+      Logger.debug('useUserShipping.deleteAddress', params);
 
       try {
         loading.value = true;
         shipping.value = await _factoryParams.deleteAddress({
-          address,
           shipping: readonlyShipping,
-          customQuery
+          ...params
         });
         error.value.deleteAddress = null;
       } catch (err) {
@@ -108,15 +102,14 @@ export const useUserShippingFactory = <USER_SHIPPING, USER_SHIPPING_ITEM, API ex
       }
     };
 
-    const updateAddress = async ({ address, customQuery }) => {
-      Logger.debug('useUserShipping.updateAddress', address);
+    const updateAddress = async (params = {}) => {
+      Logger.debug('useUserShipping.updateAddress', params);
 
       try {
         loading.value = true;
         shipping.value = await _factoryParams.updateAddress({
-          address,
           shipping: readonlyShipping,
-          customQuery
+          ...params
         });
         error.value.updateAddress = null;
       } catch (err) {
@@ -127,13 +120,14 @@ export const useUserShippingFactory = <USER_SHIPPING, USER_SHIPPING_ITEM, API ex
       }
     };
 
-    const load = async () => {
+    const load = async (params = {}) => {
       Logger.debug('useUserShipping.load');
 
       try {
         loading.value = true;
         shipping.value = await _factoryParams.load({
-          shipping: readonlyShipping
+          shipping: readonlyShipping,
+          ...params
         });
         error.value.load = null;
       } catch (err) {
@@ -144,15 +138,14 @@ export const useUserShippingFactory = <USER_SHIPPING, USER_SHIPPING_ITEM, API ex
       }
     };
 
-    const setDefaultAddress = async ({ address, customQuery }) => {
-      Logger.debug('useUserShipping.setDefaultAddress', address);
+    const setDefaultAddress = async (params) => {
+      Logger.debug('useUserShipping.setDefaultAddress', params);
 
       try {
         loading.value = true;
         shipping.value = await _factoryParams.setDefaultAddress({
-          address,
           shipping: readonlyShipping,
-          customQuery
+          ...params
         });
         error.value.setDefaultAddress = null;
       } catch (err) {

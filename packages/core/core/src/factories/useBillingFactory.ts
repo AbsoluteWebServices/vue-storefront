@@ -1,10 +1,10 @@
-import { UseBilling, Context, FactoryParams, UseBillingErrors, CustomQuery, PlatformApi } from '../types';
+import { UseBilling, Context, FactoryParams, UseBillingErrors, PlatformApi, ComposableFunctionArgs } from '../types';
 import { Ref, computed } from '@nuxtjs/composition-api';
 import { sharedRef, Logger, configureFactoryParams } from '../utils';
 
 export interface UseBillingParams<BILLING, BILLING_PARAMS, API extends PlatformApi = any> extends FactoryParams<API> {
-  load: (context: Context, params: { customQuery?: CustomQuery }) => Promise<BILLING>;
-  save: (context: Context, params: { params: BILLING_PARAMS; billingDetails: BILLING; customQuery?: CustomQuery }) => Promise<BILLING>;
+  load: (context: Context, params: ComposableFunctionArgs<unknown>) => Promise<BILLING>;
+  save: (context: Context, params: ComposableFunctionArgs<{ params: BILLING_PARAMS; billingDetails: BILLING }>) => Promise<BILLING>;
 }
 
 export const useBillingFactory = <BILLING, BILLING_PARAMS, API extends PlatformApi = any>(
@@ -23,12 +23,12 @@ export const useBillingFactory = <BILLING, BILLING_PARAMS, API extends PlatformA
       { mainRef: billing, alias: 'currentBilling', loading, error }
     );
 
-    const load = async ({ customQuery = null } = {}) => {
+    const load = async (params = {}) => {
       Logger.debug('useBilling.load');
 
       try {
         loading.value = true;
-        const billingInfo = await _factoryParams.load({ customQuery });
+        const billingInfo = await _factoryParams.load(params);
         error.value.load = null;
         billing.value = billingInfo;
       } catch (err) {
@@ -39,7 +39,7 @@ export const useBillingFactory = <BILLING, BILLING_PARAMS, API extends PlatformA
       }
     };
 
-    const save = async (saveParams) => {
+    const save = async (saveParams = {}) => {
       Logger.debug('useBilling.save');
 
       try {

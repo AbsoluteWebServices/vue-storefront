@@ -1,9 +1,9 @@
 import { Ref, computed } from '@nuxtjs/composition-api';
 import { sharedRef, Logger, configureFactoryParams } from '../utils';
-import { UseFacet, FacetSearchResult, AgnosticFacetSearchParams, Context, FactoryParams, UseFacetErrors } from '../types';
+import { UseFacet, FacetSearchResult, AgnosticFacetSearchParams, Context, FactoryParams, UseFacetErrors, ComposableFunctionArgs } from '../types';
 
 export interface UseFacetFactoryParams<SEARCH_DATA> extends FactoryParams {
-  search: (context: Context, params?: FacetSearchResult<SEARCH_DATA>) => Promise<SEARCH_DATA>;
+  search: (context: Context, params?: ComposableFunctionArgs<FacetSearchResult<SEARCH_DATA>>) => Promise<SEARCH_DATA>;
 }
 
 const useFacetFactory = <SEARCH_DATA>(factoryParams: UseFacetFactoryParams<SEARCH_DATA>) => {
@@ -17,13 +17,23 @@ const useFacetFactory = <SEARCH_DATA>(factoryParams: UseFacetFactoryParams<SEARC
       search: null
     }, `useFacet-error-${id}`);
 
-    const search = async (params?: AgnosticFacetSearchParams) => {
+    const search = async (params: ComposableFunctionArgs<AgnosticFacetSearchParams> = {}) => {
       Logger.debug(`useFacet/${ssrKey}/search`, params);
 
-      result.value.input = params;
+      const {
+        customQuery,
+        signal,
+        ...searchParams
+      } = params;
+
+      result.value.input = searchParams;
       try {
         loading.value = true;
-        result.value.data = await _factoryParams.search(result.value);
+        result.value.data = await _factoryParams.search({
+          ...result.value,
+          customQuery,
+          signal
+        });
         error.value.search = null;
       } catch (err) {
         error.value.search = err;

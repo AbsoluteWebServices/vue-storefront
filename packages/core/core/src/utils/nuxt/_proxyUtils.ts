@@ -27,9 +27,15 @@ export const createProxiedApi = ({ givenApi, client, tag }: CreateProxiedApiPara
       return Reflect.get(target, prop, receiver);
     }
 
-    return async (...args) => client
-      .post(`/${tag}/${functionName}`, args)
-      .then(r => r.data);
+    return async (...args) => {
+      let signal;
+      if (args?.length > 2) {
+        signal = args[args.length - 1];
+      }
+      return client
+        .post(`/${tag}/${functionName}`, args, { signal })
+        .then(r => r.data);
+    };
   }
 });
 
@@ -41,9 +47,15 @@ export const createProxiedGetApi = ({ givenApi, client, tag }: CreateProxiedApiP
       return Reflect.get(target, prop, receiver);
     }
 
-    return async (...args) => client
-      .get(`/${tag}/${functionName}`, { params: { a: JSON.stringify(args) } })
-      .then(r => r.data);
+    return async (...args) => {
+      let signal;
+      if (args?.length > 2) {
+        signal = args[args.length - 1];
+      }
+      return client
+        .get(`/${tag}/${functionName}`, { params: { a: JSON.stringify(args) }, signal })
+        .then(r => r.data);
+    };
   }
 });
 
