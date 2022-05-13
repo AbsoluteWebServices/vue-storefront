@@ -29,11 +29,8 @@ export const useCache = (): UseCache => {
       const parsedTags = tags.split(',').map((tag) => {
         const parts = tag.split('_');
 
-        if (parts.length === 2) {
-          return { prefix: `${parts[0]}_`, value: parts[1] };
-        }
-        if (parts.length === 3) {
-          return { prefix: `${parts[0]}_${parts[1]}_`, value: parts[2] };
+        if (parts.length > 1) {
+          return { prefix: `${parts.slice(0, -1).join('_')}_`, value: parts[parts.length - 1] };
         }
         return { prefix: '', value: parts[0] };
       });
