@@ -37,7 +37,13 @@ function createServer (config: MiddlewareConfig): Express {
     const middlewareContext: MiddlewareContext = { req, res, extensions, customQueries };
     const createApiClient = apiClient.createApiClient.bind({ middleware: middlewareContext });
     const apiClientInstance = createApiClient(configuration);
-    const apiFunction = apiClientInstance.api[functionName];
+
+    if (!Object.prototype.hasOwnProperty.call(apiClientInstance.getApi || {}, functionName)) {
+      res.sendStatus(404);
+      return;
+    }
+
+    const apiFunction = apiClientInstance.getApi[functionName];
     try {
       const { a: args } = req.query;
       const parsed = args ? JSON.parse(args as string) : [];
@@ -56,6 +62,12 @@ function createServer (config: MiddlewareConfig): Express {
     const middlewareContext: MiddlewareContext = { req, res, extensions, customQueries };
     const createApiClient = apiClient.createApiClient.bind({ middleware: middlewareContext });
     const apiClientInstance = createApiClient(configuration);
+
+    if (!Object.prototype.hasOwnProperty.call(apiClientInstance.api || {}, functionName)) {
+      res.sendStatus(404);
+      return;
+    }
+
     const apiFunction = apiClientInstance.api[functionName];
     try {
       const platformResponse = await apiFunction(...req.body);

@@ -10,7 +10,7 @@ import { applyContextToApi } from './context';
 
 const isFn = (x) => typeof x === 'function';
 
-const apiClientFactory = <ALL_SETTINGS extends ApiClientConfig, ALL_FUNCTIONS>(factoryParams: ApiClientFactoryParams<ALL_SETTINGS, ALL_FUNCTIONS>): ApiClientFactory => {
+const apiClientFactory = <ALL_SETTINGS extends ApiClientConfig, ALL_FUNCTIONS, GET_FUNCTIONS>(factoryParams: ApiClientFactoryParams<ALL_SETTINGS, ALL_FUNCTIONS, GET_FUNCTIONS>): ApiClientFactory => {
   function createApiClient (config: any, customApi: any = {}): ApiInstance {
     const rawExtensions: ApiClientExtension[] = this?.middleware?.extensions || [];
     const lifecycles = Object.values(rawExtensions)
@@ -18,6 +18,8 @@ const apiClientFactory = <ALL_SETTINGS extends ApiClientConfig, ALL_FUNCTIONS>(f
       .map(({ hooks }) => hooks(this?.middleware?.req, this?.middleware?.res));
     const extendedApis = Object.keys(rawExtensions)
       .reduce((prev, curr) => ({ ...prev, ...rawExtensions[curr].extendApiMethods }), customApi);
+    const extendedGetApis = Object.keys(rawExtensions)
+      .reduce((prev, curr) => ({ ...prev, ...rawExtensions[curr].extendGetApiMethods }), customApi);
 
     const _config = lifecycles
       .filter(ext => isFn(ext.beforeCreate))
@@ -46,8 +48,15 @@ const apiClientFactory = <ALL_SETTINGS extends ApiClientConfig, ALL_FUNCTIONS>(f
       extensionHooks
     );
 
+    const getApi = applyContextToApi(
+      { ...factoryParams.getApi, ...extendedGetApis },
+      { ...settings, ...this?.middleware || {} },
+      extensionHooks
+    );
+
     return {
       api,
+      getApi,
       client: settings.client,
       settings: settings.config
     };

@@ -6,9 +6,11 @@ import { $fetch } from 'ohmyfetch';
 const createClient = (nuxtCtx: NuxtContext, config) => ({
   async get(url, options) {
     try {
+      const baseURL = process.env.VSF_API_BASE_GET_URL || config.baseURL;
       const data = await $fetch(url, {
         method: 'GET',
         ...config,
+        baseURL,
         ...options,
         async onResponse({ response }) {
           if (process.server &&
@@ -30,9 +32,11 @@ const createClient = (nuxtCtx: NuxtContext, config) => ({
   },
   async post(url, body, options) {
     try {
+      const baseURL = process.env.VSF_API_BASE_POST_URL || config.baseURL;
       const data = await $fetch(url, {
         method: 'POST',
         ...config,
+        baseURL,
         ...options,
         body,
         async onResponse({ response }) {
@@ -89,7 +93,7 @@ export const integrationPlugin = (pluginFn: NuxtPlugin) => (nuxtCtx: NuxtContext
 
     const client = createClient(nuxtCtx, config.axios);
     const api = createProxiedApi({ givenApi: configuration.api || {}, client, tag });
-    const getApi = createProxiedGetApi({ givenApi: configuration.api || {}, client, tag });
+    const getApi = createProxiedGetApi({ givenApi: configuration.getApi || {}, client, tag });
 
     injectInContext({ api, getApi, client, config });
   };

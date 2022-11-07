@@ -45,11 +45,11 @@ export interface UseSearchErrors {
   search: Error;
 }
 
-export interface IntegrationContext<CLIENT = any, CONFIG = any, API = any> {
+export interface IntegrationContext<CLIENT = any, CONFIG = any, API = any, GET_API = any> {
   client: CLIENT;
   config: CONFIG;
   api: API;
-  getApi: API;
+  getApi: GET_API;
   [x: string]: any;
 }
 
@@ -845,8 +845,9 @@ export interface MiddlewareConfig {
   integrations: Record<string, Integration>;
 }
 
-export interface ApiClientFactoryParams<T, F = any> {
+export interface ApiClientFactoryParams<T, F = any, GetF = any> {
   api: F;
+  getApi: GetF;
   isProxy?: boolean;
   onCreate: (config: T, headers?: Record<string, string>) => { config: T; client: any };
   extensions?: ApiClientExtension[];
@@ -854,6 +855,7 @@ export interface ApiClientFactoryParams<T, F = any> {
 
 export interface ApiInstance {
   api: any;
+  getApi: any;
   client: any;
   settings: any;
 }
